@@ -1,8 +1,12 @@
 package com.git.controller;
 
+import com.git.entity.Mail;
+import com.git.service.ProduceService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -17,11 +21,15 @@ import java.util.UUID;
  * @date 2021/4/25 13:42
  */
 @RestController
+@Slf4j
 public class SendMessageController {
 
     //使用RabbitTemplate,这提供了接收/发送等等方法
     @Autowired
     RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    ProduceService testService;
 
     @GetMapping("/sendDirectMessage")
     public String sendDirectMessage(){
@@ -98,5 +106,10 @@ public class SendMessageController {
         map.put("createTime", createTime);
         rabbitTemplate.convertAndSend("lonelyDirectExchange","TestDirectRouting", map);
         return "ok";
+    }
+
+    @PostMapping("/test/send")
+    public boolean sendMail(Mail mail){
+        return testService.send(mail);
     }
 }
