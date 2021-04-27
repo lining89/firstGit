@@ -1,5 +1,6 @@
 package com.git.controller;
 
+import com.git.common.ServletResponse;
 import com.git.entity.Mail;
 import com.git.service.ProduceService;
 import lombok.extern.slf4j.Slf4j;
@@ -109,7 +110,7 @@ public class SendMessageController {
     }
 
     @PostMapping("/test/send")
-    public boolean sendMail(Mail mail){
+    public ServletResponse sendMail(Mail mail){
         return testService.send(mail);
     }
 }

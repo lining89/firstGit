@@ -1,7 +1,11 @@
 package com.git.service.impl;
 
+import com.git.common.ResponseCode;
+import com.git.common.ServletResponse;
 import com.git.config.RabbitConfig;
 import com.git.entity.Mail;
+import com.git.entity.MsgLog;
+import com.git.mapper.MsgLogMapper;
 import com.git.service.ProduceService;
 import com.git.util.MessageHelper;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
@@ -22,14 +26,21 @@ public class ProduceServiceImpl implements ProduceService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    private MsgLogMapper msgLogMapper;
+
     @Override
-    public boolean send(Mail mail) {
+    public ServletResponse send(Mail mail) {
         //创建UUID
         String msgId = UUID.randomUUID().toString().replaceAll("-","");
         mail.setMsgId(msgId);
+        //添加日志,保存到数据库
+        MsgLog msgLog = new MsgLog(msgId,mail, RabbitConfig.MAIL_EXCHANGE_NAME, RabbitConfig.MAIL_ROUTING_KEY_NAME);
+        msgLogMapper.insert(msgLog);
+
         //发送消息到rabbitMQ
         CorrelationData correlationData = new CorrelationData(msgId);
         rabbitTemplate.convertAndSend(RabbitConfig.MAIL_EXCHANGE_NAME, RabbitConfig.MAIL_ROUTING_KEY_NAME, MessageHelper.objToMsg(mail), correlationData);
-        return true;
+        return ServletResponse.success(ResponseCode.SUCCESS.getMsg());
     }
 }

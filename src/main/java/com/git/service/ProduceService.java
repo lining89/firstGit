@@ -1,5 +1,6 @@
 package com.git.service;
 
+import com.git.common.ServletResponse;
 import com.git.entity.Mail;
 
 /**
@@ -8,5 +9,5 @@ import com.git.entity.Mail;
  * @date 2021/4/26 11:20
  */
 public interface ProduceService {
-    public boolean send(Mail mail);
+    public ServletResponse send(Mail mail);
 }
