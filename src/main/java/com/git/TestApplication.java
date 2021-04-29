@@ -1,9 +1,11 @@
-package com.git.test;
+package com.git;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = "com.git")
+@MapperScan("com.git.mapper")
 public class TestApplication {
 
     public static void main(String[] args) {

@@ -6,6 +6,8 @@ import com.git.service.ProduceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -110,7 +112,11 @@ public class SendMessageController {
     }
 
     @PostMapping("/test/send")
-    public ServletResponse sendMail(Mail mail){
+    public ServletResponse sendMail(@Validated Mail mail, Errors errors){
+        if(errors.hasErrors()){
+            String msg = errors.getFieldError().getDefaultMessage();
+            return ServletResponse.error(msg);
+        }
         return testService.send(mail);
     }
 }

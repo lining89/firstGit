@@ -29,7 +29,8 @@ public class MailConsumer implements BaseConsumer {
         Mail mail = MessageHelper.msgToObj(message, Mail.class);
         log.info("收到消息： {}", mail.toString());
 
-        boolean success = sendMailUtil.send(mail);
+       // boolean success = sendMailUtil.send(mail);
+        boolean success = sendMailUtil.sendAttachment(mail);
         if(!success){
             throw new ServiceException("send mail error!!");
         }

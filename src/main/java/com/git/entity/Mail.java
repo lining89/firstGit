@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.File;
 
 /**
  * @author Mr ● Li
@@ -19,7 +20,7 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 public class Mail {
 
-    @Pattern(regexp = "^([a-z0-9A-Z]+[-|\\\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\\\.)+[a-zA-Z]{2,}$",message = "邮箱格式不正确")
+    @Pattern(regexp = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$",message = "邮箱格式不正确")
     private String to;
 
     @NotBlank(message = "标题不能为空")
@@ -29,4 +30,10 @@ public class Mail {
     private String content;
     //消息ID
     private String msgId;
+
+    //附件路径
+    private File file;
+
+    //模板内容
+    private String info;
 }
